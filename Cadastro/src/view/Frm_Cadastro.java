@@ -1,14 +1,11 @@
-
 package view;
 
 import data.Produto;
 import data.ProdutoDao;
 import javax.swing.JOptionPane;
 
-
 public class Frm_Cadastro extends javax.swing.JFrame {
 
-    
     public Frm_Cadastro() {
         initComponents();
     }
@@ -65,6 +62,11 @@ public class Frm_Cadastro extends javax.swing.JFrame {
         });
 
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,47 +149,53 @@ public class Frm_Cadastro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-       Produto produto  = new Produto();
-       ProdutoDao dao;
-       boolean status;
-       int resp;
-       
-       produto.setCod(txtCod.getText());
-       produto.setProduto(txtProduto.getText());
-       produto.setQuantidade(Double.parseDouble(txtQuantidade.getText()));
-       produto.setPrecoCompra(Double.parseDouble(txtPrecoCompra.getText()));
-       produto.setPrecoVenda(Double.parseDouble(txtPrecoVenda.getText()));
-       produto.setFornecedor(txtFornecedor.getText());
-       
-       dao = new ProdutoDao();
-       status = dao.conectar();
-       
-       if(status == false){
-           JOptionPane.showMessageDialog(null, "Erro na conexão com o banco de dados.");
-       }else {
-           resp = dao.salvar(produto);
-           if(resp == 1){
-               JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso.");
-               txtCod.setText("");
-               txtProduto.setText("");
-               txtQuantidade.setText("");
-               txtPrecoCompra.setText("");
-               txtPrecoVenda.setText("");
-               txtFornecedor.setText("");
-               txtCod.requestFocus();
-           }else if(resp == 1062) {
-               JOptionPane.showMessageDialog(null, "Essa matrícula já está cadastrada.");
-           }else{
-               JOptionPane.showMessageDialog(null, "Erro ao tentar salvar.");
-           }
-           dao.desconectar();
-       }
-    
+        Produto produto = new Produto();
+        ProdutoDao dao;
+        boolean status;
+        int resp;
+
+        produto.setCod(txtCod.getText());
+        produto.setProduto(txtProduto.getText());
+        produto.setQuantidade(Double.parseDouble(txtQuantidade.getText()));
+        produto.setPrecoCompra(Double.parseDouble(txtPrecoCompra.getText()));
+        produto.setPrecoVenda(Double.parseDouble(txtPrecoVenda.getText()));
+        produto.setFornecedor(txtFornecedor.getText());
+
+        dao = new ProdutoDao();
+        status = dao.conectar();
+
+        if (status == false) {
+            JOptionPane.showMessageDialog(null, "Erro na conexão com o banco de dados.");
+        } else {
+            resp = dao.salvar(produto);
+            if (resp == 1) {
+                JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso.");
+                limparCampos();
+            } else if (resp == 1062) {
+                JOptionPane.showMessageDialog(null, "Essa matrícula já está cadastrada.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao tentar salvar.");
+            }
+            dao.desconectar();
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
+    public void limparCampos() {
+        txtCod.setText("");
+        txtProduto.setText("");
+        txtQuantidade.setText("");
+        txtPrecoCompra.setText("");
+        txtPrecoVenda.setText("");
+        txtFornecedor.setText("");
+        txtCod.requestFocus();
+    }
 
     private void txtCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+    dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments
