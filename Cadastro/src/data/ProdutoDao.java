@@ -26,14 +26,16 @@ public class ProdutoDao {
            
     }
     //Método que salva as informações no banco de dados
-    public boolean salvar(Produto produto){
+    public int salvar(Produto produto){
+        int status;
         try {
             String sql;
             sql = "INSERT INTO produto VALUES ('"+ produto.getCod()+"','"+produto.getProduto()+"',"+produto.getQuantidade()+","+produto.getPrecoCompra()+","+produto.getPrecoVenda()+",'"+produto.getFornecedor()+"')";
-            st.executeUpdate(sql);
-            return true;
+            status = st.executeUpdate(sql);
+            return status;
         } catch (SQLException ex) {
-            return false;
+            return ex.getErrorCode();
+          // 1062 tentativa de inserir uma matrícula já cadastrada.
         }
                 
     }

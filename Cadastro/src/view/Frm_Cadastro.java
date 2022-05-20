@@ -150,6 +150,7 @@ public class Frm_Cadastro extends javax.swing.JFrame {
        Produto produto  = new Produto();
        ProdutoDao dao;
        boolean status;
+       int resp;
        
        produto.setCod(txtCod.getText());
        produto.setProduto(txtProduto.getText());
@@ -164,11 +165,9 @@ public class Frm_Cadastro extends javax.swing.JFrame {
        if(status == false){
            JOptionPane.showMessageDialog(null, "Erro na conexão com o banco de dados.");
        }else {
-           status = dao.salvar(produto);
-           if(status == false){
-               JOptionPane.showMessageDialog(null, "Error ao tentar incluir o cadastro.");
-           }else {
-               JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso.");
+           resp = dao.salvar(produto);
+           if(resp == 1){
+               JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso.");
                txtCod.setText("");
                txtProduto.setText("");
                txtQuantidade.setText("");
@@ -176,6 +175,10 @@ public class Frm_Cadastro extends javax.swing.JFrame {
                txtPrecoVenda.setText("");
                txtFornecedor.setText("");
                txtCod.requestFocus();
+           }else if(resp == 1062) {
+               JOptionPane.showMessageDialog(null, "Essa matrícula já está cadastrada.");
+           }else{
+               JOptionPane.showMessageDialog(null, "Erro ao tentar salvar.");
            }
            dao.desconectar();
        }
